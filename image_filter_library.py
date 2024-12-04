@@ -42,19 +42,22 @@ class ImageFilterLibrary:
         print(f"Image saved to {save_path}")
 
     def analyze_and_apply_filter(self):
-        """FER를 사용하여 감정을 분석하고 필터를 적용"""
+             """FER를 사용하여 감정을 분석하고 필터를 적용"""
         detector = FER(mtcnn=True)
 
         try:
             results = detector.detect_emotions(self.cv_image)
 
+        except Exception as e:
+            print(f"Error: {e}")
+            return False
+        
+        try :
             if not results:
-                print("No faces detected. Applying default filter.")
-                return self.apply_darken()  # 기본 필터 적용 후 결과 반환
+                raise 
 
             dominant_emotion = results[0]["emotions"]
             emotion = max(dominant_emotion, key=dominant_emotion.get)
-            print(f"Detected dominant emotion: {emotion}")
 
             emotion_to_filter = {
                 "happy": "yellow_tint",
@@ -65,7 +68,13 @@ class ImageFilterLibrary:
                 "fear": "darken",
             }
 
-            filter_name = emotion_to_filter.get(emotion, "sharpen")
+            filter_name = emotion_to_filter.get(emotion,"false")
+
+            if filter_name == "false":
+                print("Error: Can't analyze emotion")
+                return False
+            
+            print(f"Detected dominant emotion: {emotion}")
             print(f"Applying filter: {filter_name}")
 
             # 필터링된 이미지 생성
@@ -73,6 +82,7 @@ class ImageFilterLibrary:
             print(f"Filter '{filter_name}' applied successfully.")
             return filtered_image  # 필터링된 이미지를 반환
 
-        except Exception as e:
-            print(f"Error during emotion analysis: {e}")
-            return self.apply_sharpen()  # 기본 필터 적용 후 결과 반환
+        except :
+            print("Error: No faces detected.")
+            return False
+
