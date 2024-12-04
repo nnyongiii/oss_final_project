@@ -39,3 +39,9 @@ class ImageFilterLibrary:
         print(f"Image saved to {save_path}")
 
         """저장"""
+
+    def analyze_and_apply_filter(self):
+        """FER를 사용하여 감정을 분석하고 필터를 적용"""
+        pass
+    
+    
