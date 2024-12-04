@@ -32,5 +32,10 @@ class ImageFilterLibrary:
         return enhancer.enhance(1 / intensity)  # 강도에 반비례하여 어두워짐
     
     def save_image(self, save_path, image_to_save=None):
+        if image_to_save is None:
+            image_to_save = self.image  # 기본적으로 원본 이미지 저장
+
+        image_to_save.save(save_path)
+        print(f"Image saved to {save_path}")
+
         """저장"""
-        pass
